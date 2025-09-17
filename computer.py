@@ -6,6 +6,7 @@ class Computer:
     hard_drive_capacity: int
     memory: int
     operating_system: str
+    manufacturer: str
     year_made: int
     price: int
     # How will you set up your constructor?
@@ -16,6 +17,7 @@ class Computer:
                 hard_drive: int,
                 memory: int,
                 os: str,
+                manufacturer: str,
                 year: int,
                 price: int):
         
@@ -33,6 +35,7 @@ class Computer:
     def update_os(self, new_os: str):
         self.operating_system = new_os
 
+    
 
 
     # What methods will you need?
