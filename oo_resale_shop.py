@@ -1,4 +1,14 @@
+"""
+    Filename: oo_resale_shop.py
+Description: an example of object-oriented code to a computer shop,
+             part of A2: Object-ification, CSC120: Object-Oriented Programming
+             as taught at Smith College in Fall 2025. Based on an example by Sami Islam.
+     Author: Abigail Lei
+       Date: 17 September 2025
+"""
+
 from typing import Optional
+from computer import Computer
 
 class ResaleShop:
 
@@ -7,18 +17,31 @@ class ResaleShop:
     balance: float
 
     #Inventory, store balance, buying, selling, refurbishing
-    # How will you set up your constructor?
-    # Remember: in python, all constructors have the same name (__init__)
+    """
+    Takes in a float containing the starting balance of the computer shop
+    and creates an inventory for the shop.
+    """
     def __init__(self, balance: float):
         self.inventory = []
         self.balance = balance
 
-    def buy(self):
-        self.inventory.append(Computer)
+    """
+    Takes in an object of the computer class and an int as the price and 
+    adds the purchased computer to the resale shop's inventory, and subtracts
+    the price of the computer from the store's balance
+    """
+    def buy(self, computer: "Computer", price: int):
+        self.inventory.append(computer)
+        self.balance -= price
         return len(self.inventory) - 1
     
+    """
+    Takes in an int of the Computer's ID and removes it from the inventory, and adds the 
+    price of the computer to the store's balance
+    """  
     def sell(self, item_id: int):
         if self.inventory[item_id] is not None:
+            self.balance += self.inventory[item_id].get_price()
             self.inventory.pop(item_id)
             print("Item", item_id, "sold!")
         else: 
