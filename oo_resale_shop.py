@@ -1,3 +1,5 @@
+from typing import Optional
+
 class ResaleShop:
 
     # What attributes will it need?
@@ -9,7 +11,7 @@ class ResaleShop:
     # Remember: in python, all constructors have the same name (__init__)
     def __init__(self, balance: float):
         self.inventory = []
-        self.balance = 0
+        self.balance = balance
 
     def buy(self):
         self.inventory.append(Computer)
@@ -22,28 +24,28 @@ class ResaleShop:
         else: 
             print("Item", item_id, "not found. Please select another item to sell.")
 
-    def refurbish(item_id: int, new_os: Optional[str] = None):
+    def refurbish(self, item_id: int, new_os: Optional[str] = None):
         if self.inventory[item_id] is not None:
             computer = self.inventory[item_id] # locate the computer
-            if int(computer["year_made"]) < 2000:
-                computer["price"] = 0 # too old to sell, donation only
-            elif int(computer["year_made"]) < 2012:
-                computer["price"] = 250 # heavily-discounted price on machines 10+ years old
-            elif int(computer["year_made"]) < 2018:
-                computer["price"] = 550 # discounted price on machines 4-to-10 year old machines
+            if int(computer.get_year()) < 2000:
+                computer.update_price(0) # too old to sell, donation only
+            elif int(computer.get_year()) < 2012:
+                computer.update_price(250) # heavily-discounted price on machines 10+ years old
+            elif int(computer.get_year()) < 2018:
+                computer.update_price(550) # discounted price on machines 4-to-10 year old machines
             else:
-                computer["price"] = 1000 # recent stuff
+                computer.update_price(1000) # recent stuff
 
             if new_os is not None:
-                computer["operating_system"] = new_os # update details after installing new OS
+                computer.update_os(new_os) # update details after installing new OS
         else:
-            print("Item", item_id, "not found. Please select another item to refurbish.")
+            print("Item", item_id, " is not found. Please select another item to refurbish.")
         
 
     def print_inv(self):
         if self.inventory:
-            for item in self.inventory:
-                print(f'Item ID: {self.inventory.index(item)} : {item}')
+            for index, item in enumerate(self.inventory):
+                print(f"Item ID: {index} : {item.description}, {item.year}, ${item.price}")
         else:
             print("The inventory is empty. There is nothing to display.")
 

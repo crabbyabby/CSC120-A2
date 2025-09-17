@@ -28,13 +28,15 @@ class Computer:
         self.operating_system = os
         self.year = year
         self.price = price
-        self.id = ResaleShop.inventory
 
     def update_price(self, new_price: int):
         self.price = new_price
     
     def update_os(self, new_os: str):
         self.operating_system = new_os
+
+    def get_year(self):
+        return self.year
 
 
 
