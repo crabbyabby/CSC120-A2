@@ -10,6 +10,7 @@ Description: an example of object-oriented code to a computer shop,
 from typing import Optional
 from computer import Computer
 
+
 class ResaleShop:
 
     # What attributes will it need?
@@ -47,6 +48,10 @@ class ResaleShop:
         else: 
             print("Item", item_id, "not found. Please select another item to sell.")
 
+    """
+    Takes in an int of the Computer's ID and an optional string of the new operating system
+    and refurbishes it, setting a new price and potentially replacing the operating system.
+    """  
     def refurbish(self, item_id: int, new_os: Optional[str] = None):
         if self.inventory[item_id] is not None:
             computer = self.inventory[item_id] # locate the computer
@@ -73,4 +78,9 @@ class ResaleShop:
             print("The inventory is empty. There is nothing to display.")
 
 
-    # What methods will you need?
+def main():
+    comp1 = Computer("2019 MacBook Pro", "Intel", 256, 16, "High Sierra", 2019, 1000, 111)
+    comp1.update_os("yo")
+    print(comp1.print())
+
+main()
