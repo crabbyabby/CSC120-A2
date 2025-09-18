@@ -7,6 +7,9 @@ Description: an example of object-oriented code to a computer shop,
        Date: 17 September 2025
 """
 
+#NEED TO CHNAGE CODE TO TAKE IN ITEM ID IN THE NEW WAY WE ARE DOING IT
+
+#importing necessary modules for the code
 from typing import Optional
 from computer import Computer
 
@@ -32,18 +35,25 @@ class ResaleShop:
     the price of the computer from the store's balance
     """
     def buy(self, computer: "Computer", price: int):
-        self.inventory.append(computer)
-        self.balance -= price
-        return len(self.inventory) - 1
+        if self.balance < price:
+            print("The store cannot afford to buy this computer.")
+        else:
+            self.inventory.append(computer)
+            self.balance -= price
+            return len(self.inventory) - 1
     
     """
     Takes in an int of the Computer's ID and removes it from the inventory, and adds the 
     price of the computer to the store's balance
     """  
     def sell(self, item_id: int):
-        if self.inventory[item_id] is not None:
-            self.balance += self.inventory[item_id].get_price()
-            self.inventory.pop(item_id)
+        index = -1
+        for i in range(len(self.inventory)):
+            if self.inventory[i].get_id() == item_id:
+                index = i
+        if self.inventory[i] is not None:
+            self.balance += self.inventory[i].get_price()
+            self.inventory.pop(i)
             print("Item", item_id, "sold!")
         else: 
             print("Item", item_id, "not found. Please select another item to sell.")
@@ -53,8 +63,12 @@ class ResaleShop:
     and refurbishes it, setting a new price and potentially replacing the operating system.
     """  
     def refurbish(self, item_id: int, new_os: Optional[str] = None):
-        if self.inventory[item_id] is not None:
-            computer = self.inventory[item_id] # locate the computer
+        index = -1
+        for i in range(len(self.inventory)):
+            if self.inventory[i].get_id() == item_id:
+                index = i
+        if self.inventory[i] is not None:
+            computer = self.inventory[i] # locate the computer
             if int(computer.get_year()) < 2000:
                 computer.update_price(0) # too old to sell, donation only
             elif int(computer.get_year()) < 2012:
@@ -69,18 +83,36 @@ class ResaleShop:
         else:
             print("Item", item_id, " is not found. Please select another item to refurbish.")
         
-
+    """
+    Prints all the items in the inventory and a description of them (if it isn't empty), prints error otherwise
+    """  
     def print_inv(self):
+        statement = ""
         if self.inventory:
-            for index, item in enumerate(self.inventory):
-                print(f"Item ID: {index} : {item.description}, {item.year}, ${item.price}")
+            for item in self.inventory:
+                statement += (f"\nItem ID: {item.id} : {item.description}, {item.year}, ${item.price}")
+            return statement
         else:
-            print("The inventory is empty. There is nothing to display.")
+            return "The inventory is empty. There is nothing to display."
 
+    """
+    Returns the balance of the store
+    """    
+    def get_balance(self):
+        return self.balance
 
+#Testing the code
 def main():
     comp1 = Computer("2019 MacBook Pro", "Intel", 256, 16, "High Sierra", 2019, 1000, 111)
-    comp1.update_os("yo")
-    print(comp1.print())
+    comp2 = Computer("2020 Windows", "Intel", 512, 64, "Linux", 2022, 1100, 11)
+    store = ResaleShop(10000)
+    store.buy(comp1, 1000)
+    store.buy(comp2, 2000)
+
+    print(store.print_inv())
+    store.sell(111)
+    print(store.print_inv())
+    print(store.get_balance())
+
 
 main()

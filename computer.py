@@ -8,6 +8,9 @@ Description: an example of object-oriented code to create computers for a comput
 """
 
 class Computer:
+
+    unique_computers = set()
+    
     # What attributes will it need?
     #Price, OS, Year Made
     description: str
@@ -30,14 +33,19 @@ class Computer:
                 price: int,
                 id: int):
         
-        self.description = info
-        self.processor_type = processor
-        self.hard_drive_capacity = hard_drive
-        self.memory = memory
-        self.operating_system = os
-        self.year = year
-        self.price = price
-        self.id = id
+        #Making it so you cannot assign same ID to multiple computers
+        if id in Computer.unique_computers:
+            raise ValueError("A computer with ID already exists.")
+        else:
+            self.description = info
+            self.processor_type = processor
+            self.hard_drive_capacity = hard_drive
+            self.memory = memory
+            self.operating_system = os
+            self.year = year
+            self.price = price
+            self.id = id
+            Computer.unique_computers.add(id)
 
     """
     Takes in an int as the new price and updates the price of the associated computer
@@ -58,6 +66,9 @@ class Computer:
     def update_os(self, new_os: str):
         self.operating_system = new_os
 
+    """
+    Returns the operating system of the associated computer
+    """  
     def get_os(self):
         return self.operating_system
 
@@ -67,9 +78,15 @@ class Computer:
     def get_year(self):
         return self.year
     
+    """
+    Returns the ID of the associated computer
+    """  
     def get_id(self):
         return self.id
     
+    """
+    Prints out the full description of the computer.
+    """  
     def print(self):
         statement = f"""Description: {self.description}, Processor Type: {self.processor_type}, Hard Drive Capacity: {self.hard_drive_capacity}, Memory: {self.memory}, Operating System: {self.operating_system}, Year Produced: {self.year}, Price: {self.price} """
         return statement
